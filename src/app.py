@@ -5,10 +5,11 @@ app = Flask(__name__)
 
 def page_not_found(error):
     return "<h1>Not found page</h1>", 404
-    
+
 @app.route('/')
 def index():
     #conn = get_connection()
+    #aaaa
     return render_template('inicio.html')
 
 if __name__ == '__main__':
