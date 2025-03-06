@@ -8,7 +8,9 @@ def get_connection():
             user="admin",
             password="1234"
         )
+        connection.autocommit = True  # Habilitar autocommit
         return connection
     except Exception as ex:
-        print("Error de Conexión:", ex)
-        
+        print("Error de conexión:", ex)
+        return None
+
