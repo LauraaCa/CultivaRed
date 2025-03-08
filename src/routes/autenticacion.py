@@ -72,7 +72,7 @@ def log():
             elif session['rol'] == 'Vendedor':
                 return """<script> alert("Bienvenido a CULTIVARED"); window.location.href = "/Vendedor"; </script>"""
             elif session['rol'] == 'Comprador':
-                return """<script> alert("Bienvenido a CULTIVARED"); window.location.href = "/Tienda"; </script>"""
+                return """<script> alert("Bienvenido a CULTIVARED"); window.location.href = "/Comprador"; </script>"""
         else:
             return """<script> alert("Usuario o contraseña incorrecta"); window.location.href = "/CULTIVARED/login"; </script>"""
 
