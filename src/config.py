@@ -1,16 +1,9 @@
-import psycopg2
+import os
+from dotenv import load_dotenv
 
-def get_connection():
-    try:
-        connection = psycopg2.connect(
-            host="localhost",
-            database="CULTIVARED",
-            user="admin",
-            password="1234"
-        )
-        connection.autocommit = True  # Habilitar autocommit
-        return connection
-    except Exception as ex:
-        print("Error de conexión:", ex)
-        return None
+# Cargar variables desde .env
+load_dotenv()
 
+class Config:
+    SQLALCHEMY_DATABASE_URI = f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASS')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
