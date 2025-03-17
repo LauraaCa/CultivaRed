@@ -1,4 +1,14 @@
 import psycopg2
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  # Cargar variables de entorno desde .env
+
+class Config:
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SECRET_KEY = os.getenv("SECRET_KEY", "clave_secreta_segura")
+
 
 # Configuración de conexión a la base de datos
 DB_CONFIG = {
@@ -6,7 +16,7 @@ DB_CONFIG = {
     "user": "postgres",
     "password": "12345",
     "host": "34.172.195.227",
-    "port": "5432"
+    "port": "5432"   
 }
 
 # Función para obtener conexión
