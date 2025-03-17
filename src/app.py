@@ -8,7 +8,6 @@ app.config.from_object(Config)
 
 db.init_app(app)
 
-# Crear las tablas si no existen
 with app.app_context():
     db.create_all()
     print("✅ Tablas creadas exitosamente.")
