@@ -68,11 +68,11 @@ def log():
             session['rol'] = account[2]  # Rol del usuario
 
             if session['rol'] == 'Admin':
-                return """<script> alert("Bienvenido a CULTIVARED"); window.location.href = "/Administrador"; </script>"""
+                return """<script> alert("Bienvenido a CULTIVARED"); window.location.href = "/ADMINISTRADOR"; </script>"""
             elif session['rol'] == 'Vendedor':
-                return """<script> alert("Bienvenido a CULTIVARED"); window.location.href = "/Vendedor"; </script>"""
+                return """<script> alert("Bienvenido a CULTIVARED"); window.location.href = "/VENDEDOR"; </script>"""
             elif session['rol'] == 'Comprador':
-                return """<script> alert("Bienvenido a CULTIVARED"); window.location.href = "/Comprador"; </script>"""
+                return """<script> alert("Bienvenido a CULTIVARED"); window.location.href = "/COMPRADOR"; </script>"""
         else:
             return """<script> alert("Usuario o contraseña incorrecta"); window.location.href = "/CULTIVARED/login"; </script>"""
 
