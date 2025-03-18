@@ -5,30 +5,45 @@ main = Blueprint('vendedor_blueprint', __name__)
 
 @main.route('/')
 def vendedor():
-    if 'logueado' in session and session['logueado']:
-        conn = get_connection()
-        cur = conn.cursor()
-        
-        # Obtener datos del usuario autenticado
-        cur.execute('SELECT * FROM usuarios WHERE id = %s', (session['id'],))
-        user = cur.fetchone()
-        
-        cur.close()
-        conn.close()
+    if 'logueado' not in session or not session['logueado']:
+        return """<script> alert("Por favor, primero inicie sesión."); window.location.href = "/CULTIVARED/login"; </script>"""
 
-        if user:
-            return render_template('vendedor/vendedor.html', user=user)
-        else:
-            return """<script> alert("Usuario no encontrado."); window.location.href = "/CULTIVARED/login"; </script>"""
+    conn = get_connection()
+    cur = conn.cursor()
     
-    return """<script> alert("Por favor, primero inicie sesión."); window.location.href = "/CULTIVARED/login"; </script>"""
+    # Obtener datos del usuario autenticado
+    cur.execute('SELECT * FROM usuarios WHERE id = %s', (session['id'],))
+    user = cur.fetchone()
+    
+    cur.close()
+    conn.close()
+
+    if user:
+        return render_template('vendedor/vendedor.html', user=user)
+    else:
+        return """<script> alert("Usuario no encontrado."); window.location.href = "/CULTIVARED/login"; </script>"""
+
 
 @main.route('/RegistroProductos')
 def registro_productos():
-    return render_template('/vendedor/regitrosProducto.html')
+    if 'id' not in session:
+        return """<script> alert("Por favor, inicie sesión."); window.location.href = "/CULTIVARED/login"; </script>"""
+
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM usuarios WHERE id = %s', (session['id'],))
+    user = cur.fetchone()
+    cur.close()
+    conn.close()
+
+    return render_template('/vendedor/regitrosProducto.html', user=user)
+
 
 @main.route('/formularioProductos', methods=['GET', 'POST'])
 def form():
+    if 'id' not in session:
+        return """<script> alert("Por favor, inicie sesión."); window.location.href = "/CULTIVARED/login"; </script>"""
+
     if request.method == 'POST':
         ide = request.form['idProducto']
         nombre = request.form['nombreProducto']
@@ -36,10 +51,7 @@ def form():
         categoria = request.form['categoria']
         cantidad = request.form['unidades']
         precio = request.form['precio']
-        idVendedor = session.get('id')  # Asegúrate de que el id del vendedor está en la sesión
-
-        if not idVendedor:
-            return "<script>alert('Error: No se encontró el ID del vendedor. Inicia sesión nuevamente.'); window.location.href = '/CULTIVARED/login';</script>"
+        idVendedor = session.get('id')
 
         conn = get_connection()
         if conn:
@@ -60,18 +72,27 @@ def form():
         else:
             return "<script>alert('Error: No se pudo conectar a la base de datos.'); window.location.href = '/VENDEDOR/registroProductos';</script>"
 
-    return render_template("vendedor/vendedor.html")
+    return redirect(url_for('vendedor'))
 
 
 @main.route('/MisProductos')
 def mis_productos():
+    if 'id' not in session:
+        return """<script> alert("Por favor, inicie sesión."); window.location.href = "/CULTIVARED/login"; </script>"""
+
     conn = get_connection()
     cur = conn.cursor()         
     usuario_id = session['id']
+    
     cur.execute('SELECT * FROM productos WHERE id_vendedor = %s', (usuario_id,))
     data = cur.fetchall()                       
+
     cur.execute('SELECT * FROM usuarios WHERE id = %s', (usuario_id,))
     user = cur.fetchone()
+    
+    cur.close()
+    conn.close()
+
     return render_template('/vendedor/crudProductos.html', produ=data, user=user)
                 
 
@@ -79,10 +100,22 @@ def mis_productos():
 def historial_pedidos():
     return render_template('/vendedor/historialPedidos.html')
 
+
 @main.route('/ResumenVentas')
 def resumen_ventas():
     return render_template('/vendedor/resumenVentas.html')
 
+
 @main.route('/MiPerfil')
 def mi_perfil():
-    return render_template('/vendedor/perfilVendedor.html')
+    if 'id' not in session:
+        return """<script> alert("Por favor, inicie sesión."); window.location.href = "/CULTIVARED/login"; </script>"""
+
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM usuarios WHERE id = %s', (session['id'],))
+    user = cur.fetchone()
+    cur.close()
+    conn.close()
+
+    return render_template('/vendedor/perfilVendedor.html', user=user)
