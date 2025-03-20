@@ -1,23 +1,33 @@
 from flask import Flask
 from config import Config
 from models import db
-from routes.autenticacion import autenticacion_blueprint  # Importación directa
+from routes import autenticacion, admin, vendedor, comprador, gestor
 
 app = Flask(__name__)
 app.config.from_object(Config)
+app.secret_key = '1234'  # 🔑 Agrega esta línea
 
-# Inicializar la base de datos con Flask
 db.init_app(app)
 
-# Registrar el Blueprint con un prefijo opcional
-app.register_blueprint(autenticacion_blueprint)
-
-
-# Crear las tablas antes de iniciar el servidor
 with app.app_context():
     db.create_all()
     print("✅ Tablas creadas exitosamente.")
 
-if __name__ == "__main__":
+def page_not_found(error):
+    return "<h1>404 - Página no encontrada</h1>", 404
+
+
+
+
+
+# Registrar los Blueprints
+app.register_blueprint(autenticacion.main, url_prefix='/CULTIVARED')
+app.register_blueprint(admin.main, url_prefix='/ADMINISTRADOR')
+app.register_blueprint(vendedor.main, url_prefix='/VENDEDOR')
+app.register_blueprint(comprador.main, url_prefix='/COMPRADOR')
+app.register_blueprint(gestor.main, url_prefix='/GESTOR')
+
+app.register_error_handler(404, page_not_found)
+
+if __name__ == '__main__':
     app.run(debug=True)
-    
