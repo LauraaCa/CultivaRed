@@ -29,3 +29,4 @@ def gestor():
 @main.route('/')
 def logn_gestor():  
     return render_template('/gestor/perfilGestor.html')
+
