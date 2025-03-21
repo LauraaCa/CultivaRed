@@ -2,7 +2,7 @@
 
 body {
   background-color: #f9f9f9;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Baloo 2', cursive;;
 }
 
 .container-perfil  {
@@ -78,7 +78,7 @@ body {
 }
 
 .profile-card p {
-  margin: 5px 0;
+  /*margin: 5px 0;*/
   font-family: 'Poppins', sans-serif;
 }
 
@@ -105,4 +105,36 @@ body {
   display: block;
   margin-bottom: 5px;
   color: #333;
+}
+
+#panel-title {
+  color: #A0643A; /* Café/dorado */
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.custom-card {
+  background-color: #F9F4EB; /* Beige clarito */
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease-in-out;
+}
+
+.custom-card:hover {
+  transform: translateY(-5px);
+}
+
+.custom-card .btn-secondary {
+  background-color: #A0643A; /* Café/dorado */
+  border: none;
+  font-weight: 600;
+  border-radius: 20px;
+  padding: 8px 20px;
+  color: #fff; /* Texto blanco */
+}
+
+.custom-card .btn-secondary:hover {
+  background-color: #8a5532; /* Un tono más oscuro */
 }

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+{% extends 'administrador/baseAdmin.html' %}
+{% block body %}
+<div class="container mt-5">
+  <h2>Editar Perfil</h2>
+  <form action="/ADMINISTRADOR/editar/{{ user[0] }}" method="POST">
+    <div class="mb-3">
+      <label for="nombre" class="form-label">Nombre</label>
+      <input type="text" class="form-control" id="nombre" name="nombre" value="{{ user[2] }}">
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" class="form-control" id="email" name="email" value="{{ user[4] }}">
+    </div>
+    <div class="mb-3">
+      <label for="telefono" class="form-label">Teléfono</label>
+      <input type="text" class="form-control" id="telefono" name="telefono" value="{{ user[5] }}">
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Guardar</button>
+  </form>
+</div>
+{% endblock %}

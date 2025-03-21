@@ -17,9 +17,6 @@ def page_not_found(error):
     return "<h1>404 - Página no encontrada</h1>", 404
 
 
-
-
-
 # Registrar los Blueprints
 app.register_blueprint(autenticacion.main, url_prefix='/CULTIVARED')
 app.register_blueprint(admin.main, url_prefix='/ADMINISTRADOR')

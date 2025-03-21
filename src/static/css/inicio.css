@@ -26,6 +26,26 @@ body {
     font-size: 24px;
     font-weight: bold;
     color: #FFD700; /* Amarillo dorado */
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0px; /* Para dejar espacio a la línea */
+    text-decoration: none; /* Sin subrayado de enlace */
+}
+
+.navbar .logo::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #FFD700; /* Línea amarilla */
+}
+
+/* Evita que el hover lo elimine o lo cambie */
+.navbar .logo:hover::after {
+    content: ''; 
+    background-color: #FFD700; /* Mantén el mismo color */
 }
 
 .navbar .li {
