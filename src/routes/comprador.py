@@ -13,12 +13,17 @@ def comprador():
         cur.execute('SELECT * FROM usuarios WHERE email = %s', (session['email'],))
         user = cur.fetchone()
         
+        cur.execute('SELECT * FROM productos')
+        producto = cur.fetchall()
+        
         cur.close()
         conn.close()
 
         if user:
-            return render_template('comprador/comprador.html', user=user)
+            return render_template('comprador/comprador.html', user=user, producto=producto)
         else:
             return """<script> alert("Usuario no encontrado."); window.location.href = "/CULTIVARED/login"; </script>"""
     
     return """<script> alert("Por favor, primero inicie sesión."); window.location.href = "/CULTIVARED/login"; </script>"""
+
+
