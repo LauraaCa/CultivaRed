@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="https://bootswatch.com/5/litera/bootstrap.min.css"> 
 {% endblock %}
 
+<link rel="stylesheet" href="{{ url_for('static', filename='css/vendedor/crudProductos.css') }}">
 <div class="container">
     <div class="row">
         <div class="col">
@@ -27,23 +28,27 @@
                                 <tr>
                                     <td>{{ producto[0] }}</td>  <!-- id -->
                                     <td>{{ producto[1] }}</td>  <!-- nombre -->
-                                    <td>{{ producto[2] }}</td>  <!-- descripcion -->
+                                    <td class="text-wrap" style="max-width: 300px; white-space: pre-line;">
+                                        {{ producto[2] }}
+                                    </td>
+                                      <!-- descripcion -->
                                     <td>{{ producto[4] }}</td>  <!-- cantidad -->
                                     <td>${{ producto[5] }}</td>  <!-- precio -->
                                     <td>
                                    
                                     </td>
                                     <td>
-                                        <a href="/editarProducto/{{ producto[0] }}" title="Editar" class="btn btn-primary btn-sm">Editar</a>
-                                        <a href="/eliminarProducto/{{ producto[0] }}" title="Eliminar" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?')">Eliminar</a>
+                                        <a href="/VENDEDOR/editarProducto/{{ producto[0] }}" title="Editar" class="btn btn-primary btn-sm">Editar</a>
+                                        <a href="#" title="Eliminar" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?')">Eliminar</a>
+
                                     </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                         
                     </table>
-                    <a href="/Vendedor" class="btn btn-secondary btn-lg">Atrás</a>
                 </div>
+                <a href="/VENDEDOR/" class="btn btn-secondary btn-lg">Atrás</a>
             </form>
         </div>
     </div>
