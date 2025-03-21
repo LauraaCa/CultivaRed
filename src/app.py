@@ -5,7 +5,7 @@ from routes import autenticacion, admin, vendedor, comprador, gestor
 
 app = Flask(__name__)
 app.config.from_object(Config)
-app.secret_key = '1234'  # 🔑 Agrega esta línea
+app.secret_key = '1234'  
 
 db.init_app(app)
 

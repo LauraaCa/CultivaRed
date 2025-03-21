@@ -26,7 +26,28 @@ def gestor():
     return """<script> alert("Por favor, primero inicie sesión."); window.location.href = "/CULTIVARED/login"; </script>"""
 
 
-@main.route('/')
-def logn_gestor():  
-    return render_template('/gestor/perfilGestor.html')
+@main.route('/gestionUsuarios', methods=['GET'])
+def gestion_usuarios():
+    if 'logueado' in session and session['logueado']:
+        rol = request.args.get('rol' , 'all')
+        conn = get_connection()
+        cur = conn.cursor()
+        
+        if rol == 'all':
+            cur.execute('SELECT id, nombre, apellido, genero, email, telefono, rol FROM usuarios')
+        else:
+             cur.execute('SELECT id, nombre, apellido, genero, email, telefono, rol FROM usuarios WHERE LOWER(rol) = %s', (rol.lower(),))    
+            
+        
+        users = cur.fetchall()
+        
+         # Imprime los datos en la consola para depuración
+        print("Usuarios obtenidos de la base de datos:")
+        for user in users:
+            print(user)
+        cur.close()
+        conn.close()
 
+        return render_template('gestor/gestionUsuarios.html', users=users)
+    else:
+        return redirect(url_for('auth.login'))
