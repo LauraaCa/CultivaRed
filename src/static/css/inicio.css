@@ -7,7 +7,7 @@ body {
 }
 /* Estilos para la barra de navegación */
 .navbar {
-    background-color: #660b0b; /* Rojo oscuro */
+    background-color: #5E0B15; /* Rojo oscuro */
     padding: 10px 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -22,7 +22,7 @@ body {
 .navbar .logo {
     font-size: 24px;
     font-weight: bold;
-    color: #ffcc80; /* Amarillo dorado */
+    color: #BC8034; /* Amarillo dorado */
 }
 
 .navbar .li {
@@ -49,7 +49,7 @@ body {
 }
 
 .navbar .nav-links a:hover {
-    color: #ffcc80; /* Naranja */
+    color: #BC8034; /* Naranja */
 }
 
 .navbar .dropdown-menu {
