@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Blueprint, request, redirect, url_for, session
+from flask import Flask, flash, render_template, Blueprint, request, redirect, url_for, session
 from config import get_connection  # Importamos la conexión a PostgreSQL
 
 main = Blueprint('vendedor_blueprint', __name__)
@@ -10,7 +10,7 @@ def vendedor():
 
     conn = get_connection()
     cur = conn.cursor()
-    
+
     # Obtener datos del usuario autenticado
     cur.execute('SELECT * FROM usuarios WHERE id = %s', (session['id'],))
     user = cur.fetchone()
@@ -23,11 +23,10 @@ def vendedor():
     else:
         return """<script> alert("Usuario no encontrado."); window.location.href = "/CULTIVARED/login"; </script>"""
 
-
 @main.route('/RegistroProductos')
 def registro_productos():
-    if 'id' not in session:
-        return """<script> alert("Por favor, inicie sesión."); window.location.href = "/CULTIVARED/login"; </script>"""
+    if 'logueado' not in session or not session['logueado']:
+        return """<script> alert("Por favor, primero inicie sesión."); window.location.href = "/CULTIVARED/login"; </script>"""
 
     conn = get_connection()
     cur = conn.cursor()
@@ -38,8 +37,7 @@ def registro_productos():
 
     return render_template('/vendedor/regitrosProducto.html', user=user)
 
-
-@main.route('/formularioProductos', methods=['GET', 'POST'])
+@main.route('/formularioProductos', methods=['POST'])
 def form():
     if 'id' not in session:
         return """<script> alert("Por favor, inicie sesión."); window.location.href = "/CULTIVARED/login"; </script>"""
@@ -74,11 +72,10 @@ def form():
 
     return redirect(url_for('vendedor'))
 
-
 @main.route('/MisProductos')
 def mis_productos():
-    if 'id' not in session:
-        return """<script> alert("Por favor, inicie sesión."); window.location.href = "/CULTIVARED/login"; </script>"""
+    if 'logueado' not in session or not session['logueado']:
+        return """<script> alert("Por favor, primero inicie sesión."); window.location.href = "/CULTIVARED/login"; </script>"""
 
     conn = get_connection()
     cur = conn.cursor()         
@@ -94,22 +91,57 @@ def mis_productos():
     conn.close()
 
     return render_template('/vendedor/crudProductos.html', produ=data, user=user)
-                
+
+@main.route('/editarProducto/<int:id>')
+def editarProdu(id):
+    if 'logueado' not in session or not session['logueado']:
+        return """<script> alert("Por favor, primero inicie sesión."); window.location.href = "/login"; </script>"""
+
+    try:
+        conn = get_connection()  # Conexión a PostgreSQL
+        cur = conn.cursor()
+
+        print(f"🔹 Buscando producto con ID: {id}")
+
+        # Verificar si el producto existe
+        cur.execute("SELECT * FROM productos WHERE id = %s", (id,))
+        data = cur.fetchone()
+
+        if not data:
+            flash('⚠ El producto no existe.', 'warning')
+            return redirect(url_for('mis_productos'))
+
+        # Obtener información del usuario autenticado
+        cur.execute("SELECT * FROM usuarios WHERE id = %s", (session['id'],))
+        user = cur.fetchone()
+
+        return render_template('/vendedor/editarProducto.html', produ=data, user=user)
+
+    finally:
+        cur.close()
+        conn.close()
+
+    return redirect(url_for('vendedor_blueprint.mis_productos'))
+
 
 @main.route('/HistorialPedidos')
 def historial_pedidos():
-    return render_template('/vendedor/historialPedidos.html')
+    if 'logueado' not in session or not session['logueado']:
+        return """<script> alert("Por favor, primero inicie sesión."); window.location.href = "/CULTIVARED/login"; </script>"""
 
+    return render_template('/vendedor/historialPedidos.html')
 
 @main.route('/ResumenVentas')
 def resumen_ventas():
-    return render_template('/vendedor/resumenVentas.html')
+    if 'logueado' not in session or not session['logueado']:
+        return """<script> alert("Por favor, primero inicie sesión."); window.location.href = "/CULTIVARED/login"; </script>"""
 
+    return render_template('/vendedor/resumenVentas.html')
 
 @main.route('/MiPerfil')
 def mi_perfil():
-    if 'id' not in session:
-        return """<script> alert("Por favor, inicie sesión."); window.location.href = "/CULTIVARED/login"; </script>"""
+    if 'logueado' not in session or not session['logueado']:
+        return """<script> alert("Por favor, primero inicie sesión."); window.location.href = "/CULTIVARED/login"; </script>"""
 
     conn = get_connection()
     cur = conn.cursor()
@@ -119,3 +151,9 @@ def mi_perfil():
     conn.close()
 
     return render_template('/vendedor/perfilVendedor.html', user=user)
+
+@main.route('/logout')
+def logout():
+    session.clear()  
+    flash("Sesión cerrada correctamente.", "success")
+    return redirect(url_for('autenticacion_blueprint.iniciar'))

@@ -25,4 +25,3 @@ class Producto(db.Model):
     id_vendedor = db.Column(db.BigInteger, db.ForeignKey("usuarios.id", ondelete="CASCADE"), nullable=False)
     vendedor = db.relationship("Usuarios", backref=db.backref("productos", lazy=True))
 
-

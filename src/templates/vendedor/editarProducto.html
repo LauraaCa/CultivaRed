@@ -1,0 +1,92 @@
+{% extends 'vendedor/vendedorBase.html' %}
+{% block body %}
+
+{% block customCSS %}
+<link rel="stylesheet" href="https://bootswatch.com/5/litera/bootstrap.min.css"> 
+{% endblock %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/vendedor/registroProducto.css') }}">
+
+<!-- Formulario de Registro de Productos -->
+<section class="gradient-custom">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-9 col-xl-7">
+                <div class="card shadow-lg p-4">
+                    <h3 class="text-center mb-4">Actualiza tus productos</h3>
+
+                    <form action="/VENDEDOR/updateProducto/{{produ.0}}" method="POST" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="idProducto" class="form-label">Código Producto</label>
+                                <input type="text" name="idProdu" class="form-control" value="{{produ.0}}" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="nombreProducto" class="form-label">Nombre Producto</label>
+                                <input type="text" name="nombreProducto" class="form-control" value="{{produ.1}}" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="categoria" class="form-label">Categoría del producto</label>
+                                <select id="categoria" name="categoria" class="form-select" required>
+                                    <option value="">Elige la categoría</option>
+                                    <option value="granos_cereales" {% if produ.3 == 'granos_cereales' %} selected {% endif %}>Granos y Cereales</option>
+                                    <option value="legumbres" {% if produ.3 == 'legumbres' %} selected {% endif %}>Legumbres</option>
+                                    <option value="tuberculos_raices" {% if produ.3 == 'tuberculos_raices' %} selected {% endif %}>Tubérculos y Raíces</option>
+                                    <option value="hortalizas_verduras" {% if produ.3 == 'hortalizas_verduras' %} selected {% endif %}>Hortalizas y Verduras</option>
+                                    <option value="frutas" {% if produ.3 == 'frutas' %} selected {% endif %}>Frutas</option>
+                                    <option value="ganado_bovino" {% if produ.3 == 'ganado_bovino' %} selected {% endif %}>Ganado Bovino</option>
+                                    <option value="ganado_porcino" {% if produ.3 == 'ganado_porcino' %} selected {% endif %}>Ganado Porcino</option>
+                                    <option value="aves_corral" {% if produ.3 == 'aves_corral' %} selected {% endif %}>Aves de Corral</option>
+                                    <option value="ganado_caprino_ovino" {% if produ.3 == 'ganado_caprino_ovino' %} selected {% endif %}>Ganado Caprino y Ovino</option>
+                                    <option value="productos_lacteos" {% if produ.3 == 'productos_lacteos' %} selected {% endif %}>Productos Lácteos</option>
+                                    <option value="productos_apicolas" {% if produ.3 == 'productos_apicolas' %} selected {% endif %}>Productos Apícolas</option>
+                                    <option value="productos_pesca_acuicultura" {% if produ.3 == 'productos_pesca_acuicultura' %} selected {% endif %}>Productos de Pesca y Acuicultura</option>
+                                    <option value="productos_recoleccion_silvestre" {% if produ.3 == 'productos_recoleccion_silvestre' %} selected {% endif %}>Productos de Recolección Silvestre</option>
+                                    <option value="productos_artesanales" {% if produ.3 == 'productos_artesanales' %} selected {% endif %}>Productos Artesanales</option>
+                                    <option value="productos_transformados" {% if produ.3 == 'productos_transformados' %} selected {% endif %}>Productos Transformados</option>
+                                    <option value="semillas_plantones" {% if produ.3 == 'semillas_plantones' %} selected {% endif %}>Semillas y Plantones</option>
+                                    <option value="flores_plantas_ornamentales" {% if produ.3 == 'flores_plantas_ornamentales' %} selected {% endif %}>Flores y Plantas Ornamentales</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="unidades" class="form-label">Cantidad (Lbs)</label>
+                                <input type="number" name="unidades" class="form-control" value="{{produ.4}}">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="precio" class="form-label">Precio por libra (500gr)</label>
+                                <input type="number" name="precio" class="form-control" value="{{produ.5}}" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="descripcionProducto" class="form-label">Descripción del Producto</label>
+                            <textarea name="descripcionProducto" class="form-control" rows="3" required>{{produ.2}}</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="imagen" class="form-label">Imagen del Producto</label>
+                            <input type="file" name="imagen" id="imagen" class="form-control" accept="image/*">
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-success btn-lg" onclick="return confirm('¿Estás seguro de que deseas editar este producto?')">Actualizar</button>
+                            <a href="/VENDEDOR/MisProductos" class="btn btn-secondary btn-lg">Atrás</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+{% endblock %}
